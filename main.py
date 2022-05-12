@@ -6,7 +6,7 @@ app = Flask('app')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
-class Users(db.Model):
+class users(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String())
   email = db.Column(db.String())
@@ -14,7 +14,7 @@ class Users(db.Model):
   created_at = db.Column(db.String())
   updated_at = db.Column(db.String())
 
-class Contacts(db.Model):
+class contacts(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   title = db.Column(db.String(100))
   name = db.Column(db.String())
@@ -28,10 +28,10 @@ class Contacts(db.Model):
 
 @app.route('/')
 def index():
-  contacts = Contacts.query.all()
+  contact = contacts.query.all()
   return render_template(
     'index.html',
-    contacts=contacts
+    contacts=contact
   )
 
 @app.route('/create/', methods=['POST'])
@@ -40,7 +40,7 @@ def create():
   email = request.form.get('email')
   phone = request.form.get('phone')
   
-  new_contacts = Contacts(
+  new_contacts = contacts(
     name=name,
     email=email,
     phone=phone
@@ -55,17 +55,17 @@ def update(id):
   email = request.form.get('email')
   phone = request.form.get('phone')
 
-  contacts = Contacts.query.filter_by(id=id).first()
-  contacts.name = name
-  contacts.email = email
-  contacts.phone = phone
+  contact = contacts.query.filter_by(id=id).first()
+  contact.name = name
+  contact.email = email
+  contact.phone = phone
   db.session.commit()
   return redirect('/')
 
 @app.route('/delete/<int:id>')
 def delete(id):
-  contacts = Contacts.query.filter_by(id=id).first()
-  db.session.delete(contacts)
+  contact = contacts.query.filter_by(id=id).first()
+  db.session.delete(contact)
   db.session.commit()
   return redirect('/')
 
