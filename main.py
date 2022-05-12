@@ -2,8 +2,7 @@ from flask import Flask, render_template, request, redirect
 
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret'
+app = Flask('app')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
@@ -35,7 +34,7 @@ def index():
     contacts=contact
   )
 
-@app.route('/create/', methods=['POST'])
+@app.route('/create', methods=['POST'])
 def create():
   name = request.form.get('name')
   email = request.form.get('email')
